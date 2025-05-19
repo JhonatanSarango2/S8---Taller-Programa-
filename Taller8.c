@@ -21,15 +21,17 @@ int main (int argc, char *argv[]) {
     int opcion;
 
     do {
-        printf("\n========== MENU PRINCIPAL==========\n");
-        printf("1. Ingresar componentes\n");
-        printf("2. Ingresar productos\n");
-        printf("3. Buscar un producto\n");
-        printf("4. Editar un producto\n");
-        printf("5. Eliminar un producto\n");
-        printf("6. Pedir Producto\n");
+        printf("\n\n------------------------------------------------\n");
+        printf("Seleccione una opcion.\n");
+        printf("1. Ingresar componentes y stock.\n");
+        printf("2. Ingresar productos a fabricar.\n");
+        printf("3. Buscar un producto.\n");
+        printf("4. Editar un producto registrado.\n");
+        printf("5. Eliminar un producto registrado.\n");
+        printf("6. Pedir \n");
         printf("7. Salir\n");
-        printf("Seleccione una opcion: ");
+        printf("----------------------------------------------------\n");
+        printf(">>>> ");
         scanf("%d", &opcion);
 
         switch (opcion) {
@@ -83,35 +85,26 @@ int main (int argc, char *argv[]) {
     return 0;
 }
 
+void ingresocomponentes(float *numerocomp, char componentes[][50], int *contador) {
+    int total;
 
-void ingresocomponentes(float *numerocomp, char componentes[3][50], int *contador) {
-    int continuar = 1;
+    printf("¿Cuántos componentes desea ingresar? (máximo 3): ");
+    scanf("%d", &total);
+    while (getchar() != '\n'); // limpiar buffer
+    for (int i = 0; i < total; i++) {
+        printf("Ingrese el nombre del componente número %d: ", i + 1);
+        fgets(componentes[i], 50, stdin);
+        componentes[i][strcspn(componentes[i], "\n")] = '\0';
 
-    while (*contador < 3 && continuar) {
-        printf("Ingrese el nombre del componente numero %d que tenemos en stock: ", *contador + 1);
-        getchar();
-        fgets(componentes[*contador], 50, stdin);
-        componentes[*contador][strcspn(componentes[*contador], "\n")] = '\0'; // Eliminar salto de lÃ­nea
-
-        printf("Ingrese la cantidad de %s que se tiene en stock: ", componentes[*contador]);
-        scanf("%f", &numerocomp[*contador]);
-
-        (*contador)++; 
-
-        if (*contador < 3) {
-            printf("Desea ingresar otro componente? (0 = No, 1 = Si): ");
-            scanf("%d", &continuar);
-            if (continuar != 1 && continuar != 0) {
-                do {
-                    printf("Valor ingresado incorrecto. Ingrese 0 o 1: ");
-                    scanf("%d", &continuar);
-                } while (continuar != 1 && continuar != 0);
-            }
-        }
+        printf("Ingrese la cantidad de %s que se tiene en stock: ", componentes[i]);
+        scanf("%f", &numerocomp[i]);
+        while (getchar() != '\n');
     }
+    *contador = total;
 }
 
-void ingresoProductos(char productos[5][60], float *tiempo, float cantidadcom[5][3], int contador, char componentes[3][50]) {
+
+void ingresoProductos(char productos[][60], float *tiempo, float cantidadcom[5][3], int contador, char componentes[3][50]) {
     printf("Por favor, ingrese los 5 productos:\n");
     for (int i = 0; i < 5; i++) {
         printf("Ingrese el producto numero %d: ", i + 1);
@@ -129,7 +122,7 @@ void ingresoProductos(char productos[5][60], float *tiempo, float cantidadcom[5]
     }
 }
 
-void buscarProducto(char productos[5][60], float tiempo[5], float cantidadcom[5][3], char componentes[3][50], int contador) {
+void buscarProducto(char productos[][60], float tiempo[5], float cantidadcom[5][3], char componentes[3][50], int contador) {
     char productoBuscado[60];
     int encontrado = 0;
 
@@ -154,8 +147,7 @@ void buscarProducto(char productos[5][60], float tiempo[5], float cantidadcom[5]
         printf("Producto no encontrado.\n");
     }
 }
-
-void editarProducto(char productos[5][60], float tiempo[5], float cantidadcom[5][3], char componentes[3][50], int contador) {
+void editarProducto(char productos[][60], float tiempo[5], float cantidadcom[5][3], char componentes[3][50], int contador) {
     char productoBuscado[60];
     int encontrado = -1;
 
@@ -192,17 +184,33 @@ void editarProducto(char productos[5][60], float tiempo[5], float cantidadcom[5]
     }
 }
 
-void eliminarProducto(char productos[5][60], float tiempo[5], float cantidadcom[5][3], int *contadorProductos) {
+void eliminarProducto(char productos[][60], float tiempo[5], float cantidadcom[5][3], int *contadorProductos) {
     char productoEliminar[60];
     int encontrado = -1;
 
     printf("Ingrese el nombre del producto que desea eliminar: ");
-    getchar(); 
+    getchar();
     fgets(productoEliminar, 60, stdin);
-    productoEliminar[strcspn(productoEliminar, "\n")] = '\0'; 
+    
+    // Eliminar salto de línea manualmente
+    int len = 0;
+    while (productoEliminar[len] != '\n' && productoEliminar[len] != '\0') {
+        len++;
+    }
+    productoEliminar[len] = '\0';
 
+    // Buscar producto comparando carácter por carácter
     for (int i = 0; i < *contadorProductos; i++) {
-        if (strcmp(productos[i], productoEliminar) == 0) {
+        int j = 0;
+        int igual = 1;
+        while (productos[i][j] != '\0' || productoEliminar[j] != '\0') {
+            if (productos[i][j] != productoEliminar[j]) {
+                igual = 0;
+                break;
+            }
+            j++;
+        }
+        if (igual) {
             encontrado = i;
             break;
         }
@@ -210,69 +218,69 @@ void eliminarProducto(char productos[5][60], float tiempo[5], float cantidadcom[
 
     if (encontrado != -1) {
         for (int i = encontrado; i < *contadorProductos - 1; i++) {
-            strcpy(productos[i], productos[i + 1]);
+            int j = 0;
+            while ((productos[i + 1][j] != '\0') && j < 60) {
+                productos[i][j] = productos[i + 1][j];
+                j++;
+            }
+            productos[i][j] = '\0'; 
             tiempo[i] = tiempo[i + 1];
-            for (int j = 0; j < 3; j++) {
-                cantidadcom[i][j] = cantidadcom[i + 1][j];
+
+            for (int k = 0; k < 3; k++) {
+                cantidadcom[i][k] = cantidadcom[i + 1][k];
             }
         }
-        (*contadorProductos)--; 
+        (*contadorProductos)--;
         printf("Producto eliminado correctamente.\n");
     } else {
         printf("Producto no encontrado.\n");
     }
 }
 
-//
-
-void productosPedir(char productos[5][60], float cantidadcom[5][3], float numerocomp[3], char componentes[3][50], int contador) {
+void productosPedir(char productos[][60], float cantidadcom[5][3], float numerocomp[3], char componentes[3][50], int contador) {
     int n, cantidadPedido;
-    printf("\nCual producto desea de nuestro inventario?\n");
+
+    printf("\n¿Qué producto desea de nuestro inventario?\n");
     for (int i = 0; i < 5; i++) {
-        printf("%d- %s\n", i + 1, productos[i]);
+        if (strlen(productos[i]) > 0) {
+            printf("%d - %s\n", i + 1, productos[i]);
+        }
     }
 
-    printf("Ingrese el numero del producto que desea: ");
+    printf("Ingrese el número del producto que desea: ");
     scanf("%d", &n);
 
-    if (n < 1 || n > 5) {
-        printf("Producto no valido.\n");
+    if (n < 1 || n > 5 || strlen(productos[n - 1]) == 0) {
+        printf("Producto no válido.\n");
         return;
     }
 
-    printf("\nPor favor ingrese cuantos '%s' desea: ", productos[n - 1]);
+    printf("\nIngrese cuántos '%s' desea: ", productos[n - 1]);
     scanf("%d", &cantidadPedido);
 
     int posible = 1;
     printf("\nVerificando disponibilidad de componentes para '%s':\n", productos[n - 1]);
 
-    switch (n) {
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-            for (int i = 0; i < contador; i++) {
-                
-                float componentesNecesarios = cantidadPedido * cantidadcom[n - 1][i];
-                if (numerocomp[i] < componentesNecesarios) {
-                    printf("- No hay suficientes '%s'. Necesita %.2f, pero solo hay %.2f.\n", componentes[i], componentesNecesarios, numerocomp[i]);
-                    posible = 0;
-                } else {
-                    printf("- '%s': Disponible (necesita %.2f, hay %.2f).\n", componentes[i], componentesNecesarios, numerocomp[i]);
-                }
-            }
+    for (int i = 0; i < contador; i++) {
+        float componentesNecesarios = cantidadPedido * cantidadcom[n - 1][i];
 
-            if (posible == 1) {
-                printf("\nEl pedido es posible. Procesando...\n");
-                printf("Pedido procesado exitosamente.\n");
-            } else {
-                printf("\nNo es posible realizar el pedido debido a la falta de componentes.\n");
-            }
-            break;
+        if (numerocomp[i] < componentesNecesarios) {
+            printf("- No hay suficientes '%s'. Necesita %.2f, pero solo hay %.2f.\n",
+                   componentes[i], componentesNecesarios, numerocomp[i]);
+            posible = 0;
+        } else {
+            printf("- '%s': Disponible (necesita %.2f, hay %.2f).\n",
+                   componentes[i], componentesNecesarios, numerocomp[i]);
+        }
+    }
 
-        default:
-            printf("Producto no valido.\n");
-            break;
+    if (posible) {
+        printf("\nEl pedido es posible. Procesando...\n");
+        for (int i = 0; i < contador; i++) {
+            numerocomp[i] -= cantidadPedido * cantidadcom[n - 1][i];
+        }
+        printf("Pedido procesado exitosamente.\n");
+    } else {
+        printf("\nNo es posible realizar el pedido debido a la falta de componentes.\n");
     }
 }
