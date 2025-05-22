@@ -25,55 +25,35 @@ int main()
             if (contadorComponentes == 0)
                 printf("Primero debe ingresar componentes antes de agregar productos.\n");
             else
-
                 contadorProductos = productosaFabricar(productos, tiempo, cantidadcom, contadorComponentes, componentes);
-
             break;
         case 3:
 
             if (contadorProductos == 0)
-
                 printf("No hay productos ingresados para buscar.\n");
-
             else
-
                 EncontrarProducto(productos, tiempo, cantidadcom, componentes, contadorComponentes, contadorProductos);
-            
             break;
         case 4:
             if (contadorProductos == 0)
-
                 printf("No hay productos ingresados para editar.\n");
-            
             else
-
                 editarProducto(productos, tiempo, cantidadcom, componentes, contadorComponentes, contadorProductos);
-            
             break;
         case 5:
             if (contadorProductos == 0)
-
                 printf("No hay productos ingresados para eliminar.\n");
-                else
+            else
                 eliminarProducto(productos, tiempo, cantidadcom, &contadorProductos, contadorComponentes);
 
             break;
         case 6:
-
             if (contadorProductos == 0)
-
-    
-            printf("No hay productos ingresados para pedir.\n");
+                printf("No hay productos ingresados para pedir.\n");
             else
-
-    
-            productosPedir(productos, cantidadcom, numerocomp, componentes, contadorComponentes, contadorProductos, tiempo);
+                productosPedir(productos, cantidadcom, numerocomp, componentes, contadorComponentes, contadorProductos, tiempo);
             break;
         case 7:
-        void restablecerStock(numerocomp, componentes, contadorComponentes);
-            break;
-
-            case 8:
             printf("Fin del programa.\n");
             break;
         default:
