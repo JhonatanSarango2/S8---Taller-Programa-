@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
             }
             else
             {
-                productosPedir(productos, cantidadcom, numerocomp, componentes, contadorComponentes, contadorProductos);
+                productosPedir(productos, cantidadcom, numerocomp, componentes, contadorComponentes, contadorProductos, tiempo);
             }
             break;
         case 7:
@@ -81,4 +81,3 @@ int main(int argc, char *argv[])
     } while (opc1 != 7);
     return 0;
 }
-
