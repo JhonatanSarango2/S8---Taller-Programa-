@@ -165,14 +165,21 @@ void editarProducto(char productos[][30], float tiempo[], float cantidad[][10], 
 {
     char nombreBuscar[30];
     int encontrado = -1;
+    int c;
+
     printf("Ingrese el nombre del producto a editar: ");
-    getchar();
+
+    // Limpiar buffer antes de leer la cadena para evitar problemas con fgets
+    while ((c = getchar()) != '\n' && c != EOF);
+
     fgets(nombreBuscar, 30, stdin);
     int len = strlen(nombreBuscar);
     if (len > 0 && nombreBuscar[len - 1] == '\n')
     {
         nombreBuscar[len - 1] = '\0';
     }
+
+    // Buscar el producto en el arreglo
     for (int i = 0; i < contadorProductos; i++)
     {
         if (strcmp(productos[i], nombreBuscar) == 0)
@@ -181,11 +188,13 @@ void editarProducto(char productos[][30], float tiempo[], float cantidad[][10], 
             break;
         }
     }
+
     if (encontrado == -1)
     {
         printf("Producto no encontrado.\n");
         return;
     }
+
     printf("\nProducto encontrado: %s\n", productos[encontrado]);
     printf("\nIngrese el nuevo nombre del producto: ");
     fgets(productos[encontrado], 30, stdin);
@@ -194,27 +203,40 @@ void editarProducto(char productos[][30], float tiempo[], float cantidad[][10], 
     {
         productos[encontrado][len - 1] = '\0';
     }
+
     printf("Ingrese el nuevo tiempo de produccion: ");
     scanf("%f", &tiempo[encontrado]);
+    // Limpiar buffer después de scanf para evitar problemas en futuros inputs
+    while ((c = getchar()) != '\n' && c != EOF);
+
     for (int j = 0; j < contadorComponentes; j++)
     {
         printf("Ingrese la nueva cantidad de %s necesaria: ", componentes[j]);
         scanf("%f", &cantidad[encontrado][j]);
+        while ((c = getchar()) != '\n' && c != EOF);
     }
     printf("Producto actualizado correctamente.\n");
 }
+
 void eliminarProducto(char productos[][30], float tiempo[], float cantidad[][10], int *contadorProductos, int contadorComponentes)
 {
     char nombreEliminar[30];
     int encontrado = -1;
+    int c;
+
     printf("Ingrese el nombre del producto que desea eliminar: ");
-    getchar();
+
+    // Limpiar buffer antes de leer cadena
+    while ((c = getchar()) != '\n' && c != EOF);
+
     fgets(nombreEliminar, 30, stdin);
     int len = strlen(nombreEliminar);
     if (len > 0 && nombreEliminar[len - 1] == '\n')
     {
         nombreEliminar[len - 1] = '\0';
     }
+
+    // Buscar producto a eliminar
     for (int i = 0; i < *contadorProductos; i++)
     {
         if (strcmp(productos[i], nombreEliminar) == 0)
@@ -223,11 +245,14 @@ void eliminarProducto(char productos[][30], float tiempo[], float cantidad[][10]
             break;
         }
     }
+
     if (encontrado == -1)
     {
         printf("Producto no encontrado.\n");
         return;
     }
+
+    // Mover todos los productos posteriores una posición hacia atrás para eliminar el seleccionado
     for (int i = encontrado; i < *contadorProductos - 1; i++)
     {
         strcpy(productos[i], productos[i + 1]);
@@ -246,22 +271,22 @@ void productosPedir(char productos[][30], float cantidadcom[][10], float numeroc
     float tiempoPedido;
     char entrada[50];
 
-    printf("\n¿Cuál producto desea de nuestro inventario?\n");
+    printf("\nCual producto desea de nuestro inventario?\n");
     for (int i = 0; i < contadorProductos; i++)
         printf("%d. %s\n", i + 1, productos[i]);
 
     do
     {
-        printf("Ingrese el número del producto que desea: ");
+        printf("Ingrese el numero del producto que desea: ");
         fgets(entrada, sizeof(entrada), stdin);
         validez = sscanf(entrada, "%d", &n);
         if (validez != 1 || n < 1 || n > contadorProductos)
-            printf("Producto no válido.\n");
+            printf("Producto no valido.\n");
     } while (validez != 1 || n < 1 || n > contadorProductos);
 
     do
     {
-        printf("\nPor favor ingrese cuántos %s desea fabricar: ", productos[n - 1]);
+        printf("\nPor favor ingrese cuantos %s desea fabricar: ", productos[n - 1]);
         fgets(entrada, sizeof(entrada), stdin);
         validez = sscanf(entrada, "%d", &cantidadPedido);
         if (validez != 1 || cantidadPedido < 1)
@@ -270,7 +295,7 @@ void productosPedir(char productos[][30], float cantidadcom[][10], float numeroc
 
     do
     {
-        printf("Ingrese en cuánto tiempo (en minutos) desea que se complete la producción: ");
+        printf("Ingrese en cuanto tiempo (en minutos) desea que se complete la produccion: ");
         fgets(entrada, sizeof(entrada), stdin);
         validez = sscanf(entrada, "%f", &tiempoPedido);
         if (validez != 1 || tiempoPedido <= 0.0f)
