@@ -70,13 +70,17 @@ int main()
             productosPedir(productos, cantidadcom, numerocomp, componentes, contadorComponentes, contadorProductos, tiempo);
             break;
         case 7:
+        void restablecerStock(numerocomp, componentes, contadorComponentes);
+            break;
+
+            case 8:
             printf("Fin del programa.\n");
             break;
         default:
             printf("Opción inválida.\n");
             break;
         }
-    } while (opc1 != 7);
+    } while (opc1 != 8);
 
     return 0;
 }

@@ -23,16 +23,17 @@ int menu()
         printf("4. Editar un producto registrado.\n");
         printf("5. Eliminar un producto registrado.\n");
         printf("6. Realizar un pedido.\n");
-        printf("7. Salir.\n");
+        printf("7. Reabastecer stock\n");
+        printf("8. Salir.\n");
         printf("----------------------------------------------------\n");
         printf(">>>> ");
         scanf("%d", &opc);
         limpiarBuffer();
-        if (opc < 1 || opc > 7)
+        if (opc < 1 || opc > 8)
 
             printf("\nIngrese un numero que se encuentre dentro del menu.\n");
     
-        } while (opc < 1 || opc > 7);
+        } while (opc < 1 || opc > 8);
     return opc;
 }
 
@@ -331,4 +332,53 @@ void productosPedir(char productos[][30], float cantidadcom[][10], float numeroc
     {
         printf("\nNo es posible realizar el pedido debido a la falta de componentes.\n");
     }
+}
+void restablecerStock(float numerocomp[], char componentes[][30], int contadorComponentes)
+{
+    char entrada[20];
+    int validez, cantidadAgregar, i;
+    printf("\n---- Reabastecer Stock de Componentes ----\n");
+    printf("Componentes actuales:\n");
+    printf("_________________________________\n");
+    printf("Componente\tStock\n");
+    printf("_________________________________\n");
+    for (i = 0; i < contadorComponentes; i++)
+    {
+        printf("%d. %s\t\t%.2f\n", i + 1, componentes[i], numerocomp[i]);
+    }
+    printf("_________________________________\n");
+
+    do
+    {
+        printf("Ingrese el número del componente que desea reabastecer: ");
+        fgets(entrada, sizeof(entrada), stdin);
+        validez = sscanf(entrada, "%d", &i);
+        if (validez != 1 || i < 1 || i > contadorComponentes)
+        {
+            printf("Número de componente inválido.\n");
+        }
+    } while (validez != 1 || i < 1 || i > contadorComponentes);
+
+    do
+    {
+        printf("Ingrese la cantidad a agregar al stock de %s: ", componentes[i - 1]);
+        fgets(entrada, sizeof(entrada), stdin);
+        validez = sscanf(entrada, "%d", &cantidadAgregar);
+        if (validez != 1 || cantidadAgregar < 1)
+        {
+            printf("Cantidad inválida, debe ser un entero positivo.\n");
+        }
+    } while (validez != 1 || cantidadAgregar < 1);
+
+    numerocomp[i - 1] += cantidadAgregar;
+
+    printf("\nStock actualizado:\n");
+    printf("_________________________________\n");
+    printf("Componente\tStock\n");
+    printf("_________________________________\n");
+    for (i = 0; i < contadorComponentes; i++)
+    {
+        printf("%d. %s\t\t%.2f\n", i + 1, componentes[i], numerocomp[i]);
+    }
+    printf("_________________________________\n");
 }
