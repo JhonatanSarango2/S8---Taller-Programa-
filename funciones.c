@@ -50,9 +50,10 @@ void ingresarcomponentes(float *numerocomponentes, char componentes[][30], int *
         }
         else if (total > 10)
         {
-            printf("\nRecuerde el número maximo de productos es 10.\n");
+            printf("\nRecuerde el numero maximo de productos es 10.\n");
         }
     } while (valido != 1 || total < 1);
+    while(getchar() != '\n');
     while (*contador < total)
     {
         printf("\n\nIngrese el nombre del componente %d que se tiene en el inventario: ", *contador + 1);
@@ -62,8 +63,18 @@ void ingresarcomponentes(float *numerocomponentes, char componentes[][30], int *
         componentes[*contador][len] = '\0';
         printf("Ingrese la cantidad de %s que se tiene en stock: ", componentes[*contador]);
         scanf("%f", &numerocomponentes[*contador]);
+        while(getchar() != '\n');
         (*contador)++;
     }
+    printf("\n----------Componentes y Stock----------\n");
+    printf("______________________________\n");
+    printf("Componentes\tStock\n");
+    printf("______________________________\n");
+    for (int i = 0; i < *contador; i++)
+    {
+        printf("%s\t\t%.2f\n", componentes[i], numerocomponentes[i]);
+    }
+    printf("______________________________\n");
 }
 
 int productosaFabricar(char productos[][30], float *tiempo, float cantidad[][10], int contador, char componentes[][30])
@@ -126,7 +137,7 @@ void EncontrarProducto(char productos[][30], float tiempo[], float cantidad[][10
 
     if (strlen(BuscarProducto) == 0)
     {
-        printf("No ingresó ningún nombre de producto.\n");
+        printf("No ingreso ningun nombre de producto.\n");
         return;
     }
 
@@ -235,7 +246,7 @@ void productosPedir(char productos[][30], float cantidadcom[][10], float numeroc
     float tiempoPedido;
     char entrada[50];
 
-    printf("\n¿Cuál producto desea de nuestro inventario?\n");
+    printf("\nCual producto desea de nuestro inventario?\n");
     for (int i = 0; i < contadorProductos; i++)
         printf("%d. %s\n", i + 1, productos[i]);
 
@@ -263,7 +274,7 @@ void productosPedir(char productos[][30], float cantidadcom[][10], float numeroc
         fgets(entrada, sizeof(entrada), stdin);
         validez = sscanf(entrada, "%f", &tiempoPedido);
         if (validez != 1 || tiempoPedido <= 0.0f)
-            printf("Error: Debe ingresar un número decimal positivo.\n");
+            printf("Debe ingresar solo numeros positivo.\n");
     } while (validez != 1 || tiempoPedido <= 0.0f);
 
     float tiempoNecesario = tiempo[n - 1] * cantidadPedido;
@@ -301,6 +312,15 @@ void productosPedir(char productos[][30], float cantidadcom[][10], float numeroc
             numerocomp[i] -= cantidadPedido * cantidadcom[n - 1][i];
         }
         printf("\nPedido procesado exitosamente.\n");
+        printf("\n\nStock actualizado de componentes\n");
+        printf("_________________________________\n");
+        printf("Componente\tStock\n");
+        printf("_________________________________\n");
+        for (int i = 0; i < contadorComponentes; i++)
+        {
+            printf("%s\t\t%.2f\n", componentes[i], numerocomp[i]);
+        }
+        printf("_________________________________\n");
     }
     else
     {
