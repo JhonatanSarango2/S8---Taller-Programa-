@@ -285,7 +285,7 @@ void productosPedir(char productos[][30], float cantidadcom[][10], float numeroc
     float tiempoNecesario = tiempo[n - 1] * cantidadPedido;
     if (tiempoPedido < tiempoNecesario)
     {
-        printf("\nNo es posible completar la producción en el tiempo solicitado.\n");
+        printf("\nNo es posible completar la produccion en el tiempo solicitado.\n");
         printf("Tiempo necesario: %.2f minutos.\n", tiempoNecesario);
         printf("Tiempo establecido: %.2f minutos.\n", tiempoPedido);
         return;
