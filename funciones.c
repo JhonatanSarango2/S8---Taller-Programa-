@@ -169,17 +169,14 @@ void editarProducto(char productos[][30], float tiempo[], float cantidad[][10], 
 
     printf("Ingrese el nombre del producto a editar: ");
 
-    // Limpiar buffer antes de leer la cadena para evitar problemas con fgets
+    // Limpiar buffer antes de fgets
     while ((c = getchar()) != '\n' && c != EOF);
 
-    fgets(nombreBuscar, 30, stdin);
+    fgets(nombreBuscar, sizeof(nombreBuscar), stdin);
     int len = strlen(nombreBuscar);
     if (len > 0 && nombreBuscar[len - 1] == '\n')
-    {
         nombreBuscar[len - 1] = '\0';
-    }
 
-    // Buscar el producto en el arreglo
     for (int i = 0; i < contadorProductos; i++)
     {
         if (strcmp(productos[i], nombreBuscar) == 0)
@@ -196,17 +193,16 @@ void editarProducto(char productos[][30], float tiempo[], float cantidad[][10], 
     }
 
     printf("\nProducto encontrado: %s\n", productos[encontrado]);
-    printf("\nIngrese el nuevo nombre del producto: ");
-    fgets(productos[encontrado], 30, stdin);
+    printf("Ingrese el nuevo nombre del producto: ");
+    fgets(productos[encontrado], sizeof(productos[encontrado]), stdin);
     len = strlen(productos[encontrado]);
     if (len > 0 && productos[encontrado][len - 1] == '\n')
-    {
         productos[encontrado][len - 1] = '\0';
-    }
 
     printf("Ingrese el nuevo tiempo de produccion: ");
     scanf("%f", &tiempo[encontrado]);
-    // Limpiar buffer después de scanf para evitar problemas en futuros inputs
+
+    // Limpiar buffer después de scanf
     while ((c = getchar()) != '\n' && c != EOF);
 
     for (int j = 0; j < contadorComponentes; j++)
@@ -215,6 +211,7 @@ void editarProducto(char productos[][30], float tiempo[], float cantidad[][10], 
         scanf("%f", &cantidad[encontrado][j]);
         while ((c = getchar()) != '\n' && c != EOF);
     }
+
     printf("Producto actualizado correctamente.\n");
 }
 
@@ -226,17 +223,14 @@ void eliminarProducto(char productos[][30], float tiempo[], float cantidad[][10]
 
     printf("Ingrese el nombre del producto que desea eliminar: ");
 
-    // Limpiar buffer antes de leer cadena
+    // Limpiar buffer antes de fgets
     while ((c = getchar()) != '\n' && c != EOF);
 
-    fgets(nombreEliminar, 30, stdin);
+    fgets(nombreEliminar, sizeof(nombreEliminar), stdin);
     int len = strlen(nombreEliminar);
     if (len > 0 && nombreEliminar[len - 1] == '\n')
-    {
         nombreEliminar[len - 1] = '\0';
-    }
 
-    // Buscar producto a eliminar
     for (int i = 0; i < *contadorProductos; i++)
     {
         if (strcmp(productos[i], nombreEliminar) == 0)
@@ -252,7 +246,6 @@ void eliminarProducto(char productos[][30], float tiempo[], float cantidad[][10]
         return;
     }
 
-    // Mover todos los productos posteriores una posición hacia atrás para eliminar el seleccionado
     for (int i = encontrado; i < *contadorProductos - 1; i++)
     {
         strcpy(productos[i], productos[i + 1]);
@@ -263,6 +256,7 @@ void eliminarProducto(char productos[][30], float tiempo[], float cantidad[][10]
         }
     }
     (*contadorProductos)--;
+
     printf("\nProducto eliminado correctamente.\n");
 }
 void productosPedir(char productos[][30], float cantidadcom[][10], float numerocomp[], char componentes[][30], int contadorComponentes, int contadorProductos, float tiempo[])
