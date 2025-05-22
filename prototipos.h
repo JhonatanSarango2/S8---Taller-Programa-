@@ -1,3 +1,4 @@
+
 int menu();
 void ingresarcomponentes(float *numerocomponentes, char componentes[][30], int *contador);
 int productosaFabricar(char productos[][30], float *tiempo, float cantidad[][10], int contador, char componentes[][30]);

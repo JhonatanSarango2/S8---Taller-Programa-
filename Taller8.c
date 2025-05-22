@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
         case 2:
             if (contadorComponentes == 0)
             {
-                printf("Primero debe ingresar componentes antes de agregar productos.\n");
+                printf("Primero, debe ingresar componentes antes de agregar productos.\n");
             }
             else
             {
