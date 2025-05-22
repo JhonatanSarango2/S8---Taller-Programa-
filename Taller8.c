@@ -2,7 +2,7 @@
 #include <string.h>
 #include "prototipos.h"
 
-int main(int argc, char *argv[])
+int main()
 {
     char componentes[10][30];
     float numerocomp[10] = {0};
@@ -12,6 +12,7 @@ int main(int argc, char *argv[])
     float cantidadcom[5][10] = {{0}};
     int contadorProductos = 0;
     int opc1;
+
     do
     {
         opc1 = menu();
@@ -22,54 +23,51 @@ int main(int argc, char *argv[])
             break;
         case 2:
             if (contadorComponentes == 0)
-            {
-                printf("Primero, debe ingresar componentes antes de agregar productos.\n");
-            }
+                printf("Primero debe ingresar componentes antes de agregar productos.\n");
             else
-            {
+
                 contadorProductos = productosaFabricar(productos, tiempo, cantidadcom, contadorComponentes, componentes);
-            }
+
             break;
         case 3:
+
             if (contadorProductos == 0)
-            {
+
                 printf("No hay productos ingresados para buscar.\n");
-            }
+
             else
-            {
-                fflush(stdin);
+
                 EncontrarProducto(productos, tiempo, cantidadcom, componentes, contadorComponentes, contadorProductos);
-            }
+            
             break;
         case 4:
             if (contadorProductos == 0)
-            {
+
                 printf("No hay productos ingresados para editar.\n");
-            }
+            
             else
-            {
+
                 editarProducto(productos, tiempo, cantidadcom, componentes, contadorComponentes, contadorProductos);
-            }
+            
             break;
         case 5:
             if (contadorProductos == 0)
-            {
+
                 printf("No hay productos ingresados para eliminar.\n");
-            }
-            else
-            {
+                else
                 eliminarProducto(productos, tiempo, cantidadcom, &contadorProductos, contadorComponentes);
-            }
+
             break;
         case 6:
+
             if (contadorProductos == 0)
-            {
-                printf("No hay productos ingresados para pedir.\n");
-            }
+
+    
+            printf("No hay productos ingresados para pedir.\n");
             else
-            {
-                productosPedir(productos, cantidadcom, numerocomp, componentes, contadorComponentes, contadorProductos, tiempo);
-            }
+
+    
+            productosPedir(productos, cantidadcom, numerocomp, componentes, contadorComponentes, contadorProductos, tiempo);
             break;
         case 7:
             printf("Fin del programa.\n");
@@ -79,5 +77,6 @@ int main(int argc, char *argv[])
             break;
         }
     } while (opc1 != 7);
+
     return 0;
 }
